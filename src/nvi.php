@@ -16,6 +16,9 @@ class nvi
      */
     public function tcknDogrula($TCKimlikNo, $Ad, $Soyad, $DogumYili)
     {
+
+        if(!$this->tcknKontrol($TCKimlikNo)) return false;
+
         $soap = new SoapClient("https://tckimlik.nvi.gov.tr/Service/KPSPublic.asmx?WSDL");
 
         $data = [
