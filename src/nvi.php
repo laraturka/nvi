@@ -33,6 +33,7 @@ class nvi
         return $r->TCKimlikNoDogrulaResult === true;
     }
 
+
     public function tcknKontrol($TCKimlikNo)
     {
         if (strlen($TCKimlikNo) != 11) return false;
@@ -47,5 +48,69 @@ class nvi
         return true;
     }
 
+
+
+    /**
+     * @param $KimlikNo TAM SAYI OLMALI
+     * @param $Ad BUYUK HARF OLMALI
+     * @param $Soyad BUYUK HARF OLMALI
+     * @param $DogumGun TAM SAYI OLMALI
+     * @param $DogumAy TAM SAYI OLMALI
+     * @param $DogumYil TAM SAYI OLMALI
+     * @return bool
+     */
+    public function tcknDogrula2($KimlikNo, $Ad, $Soyad, $DogumGun, $DogumAy, $DogumYil)
+    {
+
+        if(!$this->tcknKontrol($KimlikNo)) return false;
+
+        $soap = new SoapClient("https://tckimlik.nvi.gov.tr/Service/KPSPublicV2.asmx?WSDL");
+
+        $data = [
+            "TCKimlikNo" => intval($KimlikNo),
+            "Ad" => $Ad,
+            "Soyad" => $Soyad,
+            "SoyadYok" => false,
+            "DogumGun" => intval($DogumGun),
+            "DogumGunYok" => false,
+            "DogumAy" => intval($DogumAy),
+            "DogumAyYok" => false,
+            "DogumYil" => intval($DogumYil)
+        ];
+
+        $r = $soap->KisiVeCuzdanDogrula($data);
+
+        return $r->KisiVeCuzdanDogrulaResult === true;
+    }
+
+    /**
+     * @param $KimlikNo TAM SAYI OLMALI
+     * @param $Ad BUYUK HARF OLMALI
+     * @param $Soyad BUYUK HARF OLMALI
+     * @param $DogumGun TAM SAYI OLMALI
+     * @param $DogumAy TAM SAYI OLMALI
+     * @param $DogumYil TAM SAYI OLMALI
+     * @return bool
+     */
+    public function tcknYabanciDogrula($KimlikNo, $Ad, $Soyad, $DogumGun, $DogumAy, $DogumYil)
+    {
+
+        if(!$this->tcknKontrol($KimlikNo)) return false;
+
+        $soap = new SoapClient("https://tckimlik.nvi.gov.tr/Service/KPSPublicYabanciDogrula.asmx?WSDL");
+
+        $data = [
+            "KimlikNo" => intval($KimlikNo),
+            "Ad" => $Ad,
+            "Soyad" => $Soyad,
+            "DogumGun" => intval($DogumGun),
+            "DogumAy" => intval($DogumAy),
+            "DogumYil" => intval($DogumYil)
+        ];
+
+        $r = $soap->YabanciKimlikNoDogrula($data);
+
+        return $r->YabanciKimlikNoDogrulaResult === true;
+    }
 
 }
