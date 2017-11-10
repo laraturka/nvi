@@ -23,8 +23,8 @@ class nvi
 
         $data = [
             "TCKimlikNo" => intval($TCKimlikNo),
-            "Ad" => $Ad,
-            "Soyad" => $Soyad,
+            "Ad" => mb_strtoupper(str_replace(array('ı','ğ','ü','ş','i','ö','ç'), array('I','Ğ','Ü','Ş','İ','Ö','Ç'), $Ad), 'utf-8'),
+            "Soyad" => mb_strtoupper(str_replace(array('ı','ğ','ü','ş','i','ö','ç'), array('I','Ğ','Ü','Ş','İ','Ö','Ç'), $Soyad), 'utf-8'),
             "DogumYili" => intval($DogumYili)
         ];
 
